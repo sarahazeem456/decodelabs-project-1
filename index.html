@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura Botanics | Mindful Skincare Store</title>
+
+  <!-- Typography Tokens: Montserrat (Headings) & Open Sans (Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       Design Tokens & CSS Variables (DecodeLabs 2025 Aesthetics)
+       ========================================================================== */
+    :root {
+      --color-mocha: #A5856F;     /* Mocha Mousse */
+      --color-ethereal: #A0D4E0;  /* Ethereal Blue */
+      --color-moonlit: #F2F0EA;   /* Moonlit Grey */
+      --color-dark: #2A2826;
+      --color-white: #FFFFFF;
+      --color-star: #E5A93C;
+
+      --font-heading: 'Montserrat', sans-serif;
+      --font-body: 'Open Sans', sans-serif;
+
+      --fs-hero: clamp(1.8rem, 4vw + 1rem, 2.75rem);
+      --fs-h2: clamp(1.15rem, 1.8vw + 0.75rem, 1.45rem);
+      --fs-body: clamp(0.9rem, 0.4vw + 0.8rem, 1.05rem);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-body);
+      font-size: var(--fs-body);
+      color: var(--color-dark);
+      background-color: var(--color-moonlit);
+      line-height: 1.6;
+    }
+
+    /* Macro Layout: CSS Grid */
+    .store-layout {
+      display: grid;
+      grid-template-areas:
+        "header"
+        "sidebar"
+        "main"
+        "footer";
+      grid-template-columns: 1fr;
+      min-height: 100vh;
+    }
+
+    /* Header & Navigation */
+    .store-header {
+      grid-area: header;
+      background-color: var(--color-white);
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(165, 133, 111, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 60;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background-color: var(--color-ethereal);
+      border: 2px solid var(--color-mocha);
+    }
+
+    .brand-name {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--color-mocha);
+      letter-spacing: 0.5px;
+    }
+
+    .nav-toggle {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--color-dark);
+    }
+
+    .store-nav {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--color-white);
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid rgba(165, 133, 111, 0.2);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .store-nav.active { display: block; }
+
+    .nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .nav-list a, .nav-btn {
+      text-decoration: none;
+      color: var(--color-dark);
+      font-weight: 600;
+      background: none;
+      border: none;
+      font-size: 0.95rem;
+      cursor: pointer;
+      font-family: var(--font-body);
+      text-align: left;
+      transition: color 0.2s ease;
+    }
+
+    .nav-list a:hover, .nav-btn:hover { color: var(--color-mocha); }
+
+    .user-pill {
+      background-color: #ECE8E0;
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--color-mocha);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .user-pill button {
+      background: none;
+      border: none;
+      color: #993333;
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-weight: bold;
+      text-decoration: underline;
+    }
+
+    /* Sidebar Landmark */
+    .store-sidebar {
+      grid-area: sidebar;
+      background-color: #ECE8E0;
+      padding: 1.5rem;
+      border-bottom: 1px solid rgba(165, 133, 111, 0.15);
+    }
+
+    .sidebar-heading {
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      margin-bottom: 0.85rem;
+      color: var(--color-mocha);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .filter-list {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .filter-btn {
+      background-color: var(--color-white);
+      border: 1px solid rgba(165, 133, 111, 0.3);
+      padding: 0.4rem 0.85rem;
+      border-radius: 20px;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      cursor: pointer;
+      color: var(--color-dark);
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn.active, .filter-btn:hover {
+      background-color: var(--color-mocha);
+      color: var(--color-white);
+      border-color: var(--color-mocha);
+    }
+
+    /* Main Landmark */
+    .store-main { grid-area: main; padding: 1.5rem; }
+
+    .hero-banner {
+      background-color: var(--color-white);
+      padding: 2rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      border-left: 6px solid var(--color-ethereal);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    }
+
+    .hero-tag {
+      font-family: var(--font-heading);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--color-mocha);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-title {
+      font-family: var(--font-heading);
+      font-size: var(--fs-hero);
+      color: var(--color-dark);
+      margin-bottom: 0.75rem;
+      line-height: 1.2;
+    }
+
+    /* Live Controls Toolbar */
+    .catalog-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      background: var(--color-white);
+      padding: 1rem 1.25rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+      border: 1px solid rgba(165, 133, 111, 0.15);
+    }
+
+    .search-wrap { flex: 1; position: relative; }
+
+    .search-input {
+      width: 100%;
+      padding: 0.65rem 1rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+    }
+
+    .search-input:focus { outline: none; border-color: var(--color-mocha); }
+
+    .sort-wrap { display: flex; align-items: center; gap: 0.5rem; }
+
+    .sort-select {
+      padding: 0.65rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      background: var(--color-white);
+      color: var(--color-dark);
+    }
+
+    /* Product Grid & Cards */
+    .product-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .product-card {
+      background-color: var(--color-white);
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+      border: 1px solid rgba(165, 133, 111, 0.12);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .product-card.hidden { display: none !important; }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(165, 133, 111, 0.15);
+    }
+
+    /* Product Image Wrapper: Handles Direct Inline SVGs */
+    .img-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background-color: #FAF8F5;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .img-wrapper svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .product-card:hover .img-wrapper svg {
+      transform: scale(1.04);
+    }
+
+    .wishlist-btn {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(4px);
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #777;
+      transition: all 0.2s ease;
+      z-index: 5;
+    }
+
+    .wishlist-btn.active { color: #d94343; background: #fff; }
+
+    .product-details {
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .rating-row {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.8rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .stars { color: var(--color-star); font-size: 0.9rem; }
+    .review-count { color: #888; }
+
+    .product-name {
+      font-family: var(--font-heading);
+      font-size: var(--fs-h2);
+      color: var(--color-mocha);
+      margin-bottom: 0.4rem;
+    }
+
+    .product-desc {
+      font-size: 0.9rem;
+      margin-bottom: 0.75rem;
+      flex-grow: 1;
+      color: #555;
+    }
+
+    .click-hint {
+      font-size: 0.75rem;
+      color: #999;
+      font-style: italic;
+      margin-bottom: 0.75rem;
+    }
+
+    .product-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 0.85rem;
+      border-top: 1px solid var(--color-moonlit);
+    }
+
+    .product-price {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.15rem;
+    }
+
+    .btn {
+      display: inline-block;
+      font-family: var(--font-heading);
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 0.65rem 1.4rem;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .btn-primary { background-color: var(--color-mocha); color: var(--color-white); }
+    .btn-primary:hover { opacity: 0.9; }
+
+    .btn-cart {
+      background-color: transparent;
+      color: var(--color-mocha);
+      border: 1.5px solid var(--color-mocha);
+      padding: 0.45rem 0.9rem;
+      font-family: var(--font-heading);
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-cart:hover {
+      background-color: var(--color-mocha);
+      color: var(--color-white);
+    }
+
+    /* Footer Landmark */
+    .store-footer {
+      grid-area: footer;
+      background-color: var(--color-mocha);
+      color: var(--color-white);
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    /* Modals System */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(42, 40, 38, 0.65);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    .modal-box {
+      background: var(--color-white);
+      border-radius: 8px;
+      padding: 2rem;
+      width: 100%;
+      max-width: 460px;
+      position: relative;
+      border-top: 5px solid var(--color-mocha);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #888;
+    }
+
+    .modal-title {
+      font-family: var(--font-heading);
+      color: var(--color-mocha);
+      font-size: 1.35rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .modal-subtitle {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 1.25rem;
+    }
+
+    .ingredient-tag {
+      display: inline-block;
+      background-color: var(--color-moonlit);
+      color: var(--color-mocha);
+      font-weight: 600;
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .ingredient-section {
+      margin-bottom: 0.85rem;
+      background-color: #FAF8F5;
+      padding: 0.85rem;
+      border-radius: 6px;
+      border-left: 3px solid var(--color-ethereal);
+    }
+
+    .ingredient-label {
+      font-family: var(--font-heading);
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--color-mocha);
+      margin-bottom: 0.25rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .ingredient-text {
+      font-size: 0.85rem;
+      color: var(--color-dark);
+      line-height: 1.5;
+    }
+
+    /* Cart Items & Summary */
+    .cart-items-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #FAF8F5;
+      padding: 0.75rem;
+      border-radius: 6px;
+      border: 1px solid rgba(165, 133, 111, 0.15);
+    }
+
+    .cart-item-title { font-family: var(--font-heading); font-weight: 600; font-size: 0.9rem; }
+    .cart-item-meta { font-size: 0.8rem; color: #777; }
+
+    .cart-qty-ctrl { display: flex; align-items: center; gap: 0.5rem; }
+
+    .qty-btn {
+      background: var(--color-white);
+      border: 1px solid #ccc;
+      width: 24px;
+      height: 24px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-weight: bold;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cart-summary-box {
+      border-top: 2px solid var(--color-moonlit);
+      padding-top: 1rem;
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    /* Checkout Flow Steps */
+    .step-indicator {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 0.75rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .step-indicator span.active { color: var(--color-mocha); border-bottom: 2px solid var(--color-mocha); }
+
+    .checkout-step { display: none; }
+    .checkout-step.active { display: block; }
+
+    .form-group { margin-bottom: 0.85rem; }
+    .form-group label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 0.65rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+    }
+
+    /* Toast Notification */
+    .toast-container {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .toast {
+      background: var(--color-dark);
+      color: #fff;
+      padding: 0.85rem 1.25rem;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      border-left: 4px solid var(--color-ethereal);
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      animation: slideUp 0.3s ease-out;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Responsive Breakpoints */
+    @media (min-width: 768px) {
+      .nav-toggle { display: none; }
+      .store-nav { display: block; position: static; padding: 0; border: none; background: transparent; box-shadow: none; }
+      .nav-list { flex-direction: row; align-items: center; gap: 1.5rem; }
+      .catalog-controls { flex-direction: row; align-items: center; }
+      .product-grid { grid-template-columns: repeat(2, 1fr); }
+      .filter-list { flex-direction: column; }
+    }
+
+    @media (min-width: 1024px) {
+      .store-layout {
+        grid-template-areas:
+          "header  header"
+          "sidebar main"
+          "footer  footer";
+        grid-template-columns: 240px 1fr;
+        grid-template-rows: auto 1fr auto;
+      }
+      .store-sidebar { border-right: 1px solid rgba(165, 133, 111, 0.15); border-bottom: none; padding: 2rem 1.5rem; }
+      .store-main { padding: 2rem; }
+      .product-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="store-layout">
+    <!-- Header Landmark -->
+    <header class="store-header">
+      <a href="#" class="brand">
+        <span class="brand-mark"></span>
+        <span class="brand-name">Aura Botanics</span>
+      </a>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle Navigation">☰</button>
+
+      <nav class="store-nav" id="storeNav">
+        <ul class="nav-list">
+          <li><a href="#catalog">Catalog</a></li>
+          <li><button class="nav-btn" id="openWishlistBtn">Wishlist (<span id="wishCount">0</span>)</button></li>
+          <li><button class="nav-btn" id="openCartBtn">Bag (<span id="cartCount">0</span>)</button></li>
+          <li id="authSection">
+            <button class="nav-btn" id="openLoginBtn">Sign In</button>
+          </li>
+          <li id="regSection">
+            <button class="btn btn-primary" id="openRegisterBtn" style="padding: 0.4rem 0.9rem; font-size: 0.85rem;">Register</button>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Sidebar Landmark -->
+    <aside class="store-sidebar">
+      <h2 class="sidebar-heading">Skin Needs</h2>
+      <ul class="filter-list">
+        <li><button class="filter-btn active" data-category="all">All Formulations</button></li>
+        <li><button class="filter-btn" data-category="hydration">Hydration Boost</button></li>
+        <li><button class="filter-btn" data-category="barrier">Barrier Restore</button></li>
+        <li><button class="filter-btn" data-category="gentle">Gentle Balance</button></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content Landmark -->
+    <main class="store-main">
+      <section class="hero-banner">
+        <p class="hero-tag">Grounding Skin Health</p>
+        <h1 class="hero-title">Warm, essential care for your barrier.</h1>
+        <p class="hero-desc">
+          Restorative botanicals, active ceramides, and pure squalane. 
+        </p>
+      </section>
+
+      <!-- Live Search & Sorting Controls -->
+      <div class="catalog-controls">
+        <div class="search-wrap">
+          <input type="text" id="liveSearchInput" class="search-input" placeholder="Search by name, key active, or benefit...">
+        </div>
+        <div class="sort-wrap">
+          <label for="catalogSort" style="font-size: 0.85rem; font-weight: 600;">Sort:</label>
+          <select id="catalogSort" class="sort-select">
+            <option value="featured">Featured</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="name-asc">Name: A to Z</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Dynamic Product Grid -->
+      <section class="product-grid" id="productGridContainer">
+        <!-- Rendered dynamically by JavaScript -->
+      </section>
+    </main>
+
+    <!-- Footer Landmark -->
+    <footer class="store-footer">
+      <p>&copy; 2026 Aura Botanics. Full Stack Project 1 Interface.</p>
+    </footer>
+  </div>
+
+  <!-- Toast Notifications Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- 1. Shopping Bag Modal -->
+  <div class="modal-overlay" id="cartModal">
+    <div class="modal-box">
+      <button class="modal-close" id="closeCartModal">&times;</button>
+      <h2 class="modal-title">Your Shopping Bag</h2>
+      <p class="modal-subtitle">Review and manage your selected formulations.</p>
+
+      <ul class="cart-items-list" id="cartItemsList"></ul>
+
+      <div class="cart-summary-box">
+        <span>Subtotal</span>
+        <span id="cartSubtotal">$0.00</span>
+      </div>
+
+      <button class="btn btn-primary" id="startCheckoutBtn" style="width: 100%; margin-top: 1.25rem;">Proceed to Checkout</button>
+    </div>
+  </div>
+
+  <!-- 2. Multi-Step Checkout Modal -->
+  <div class="modal-overlay" id="checkoutModal">
+    <div class="modal-box">
+      <button class="modal-close" id="closeCheckoutModal">&times;</button>
+      
+      <div class="step-indicator">
+        <span id="stepTab1" class="active">1. Shipping</span>
+        <span id="stepTab2">2. Payment</span>
+        <span id="stepTab3">3. Confirmation</span>
+      </div>
+
+      <!-- Step 1: Shipping -->
+      <div class="checkout-step active" id="checkoutStep1">
+        <h2 class="modal-title">Shipping Address</h2>
+        <form id="shippingForm">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="shipName" required>
+          </div>
+          <div class="form-group">
+            <label>Street Address</label>
+            <input type="text" id="shipAddress" required>
+          </div>
+          <div class="form-group">
+            <label>City & Postal Code</label>
+            <input type="text" id="shipCity" placeholder="e.g. Wah Cantt, 47040" required>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">Continue to Payment</button>
+        </form>
+      </div>
+
+      <!-- Step 2: Payment -->
+      <div class="checkout-step" id="checkoutStep2">
+        <h2 class="modal-title">Payment Method</h2>
+        <p class="modal-subtitle">Safe & encrypted checkout (Mock Simulation).</p>
+        <form id="paymentForm">
+          <div class="form-group">
+            <label>Card Number</label>
+            <input type="text" placeholder="4532 •••• •••• 8821" maxlength="19" required>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <div class="form-group" style="flex: 1;">
+              <label>Expiry</label>
+              <input type="text" placeholder="MM/YY" maxlength="5" required>
+            </div>
+            <div class="form-group" style="flex: 1;">
+              <label>CVC</label>
+              <input type="text" placeholder="123" maxlength="3" required>
+            </div>
+          </div>
+          <div class="cart-summary-box" style="margin-bottom: 1rem;">
+            <span>Total Charge:</span>
+            <span id="checkoutTotal">$0.00</span>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Authorize Payment</button>
+        </form>
+      </div>
+
+      <!-- Step 3: Confirmation -->
+      <div class="checkout-step" id="checkoutStep3" style="text-align: center;">
+        <div style="font-size: 2.5rem; color: #2e7d32; margin-bottom: 0.5rem;">✓</div>
+        <h2 class="modal-title">Order Confirmed!</h2>
+        <p class="modal-subtitle">Thank you for your order, <span id="receiptName"></span>.</p>
+        <p style="font-size: 0.85rem; margin-bottom: 1.25rem;">
+          Order ID: <strong id="receiptId">#AURA-9821</strong><br>
+          A confirmation and tracking link have been dispatched.
+        </p>
+        <button class="btn btn-primary" id="finishCheckoutBtn">Back to Store</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Product Ingredients Modal -->
+  <div class="modal-overlay" id="ingredientModal">
+    <div class="modal-box">
+      <button class="modal-close" id="closeIngredientModal">&times;</button>
+      <span class="ingredient-tag" id="modalCategory">HYDRATION</span>
+      <h2 class="modal-title" id="modalProductName">Product Name</h2>
+      <p class="modal-subtitle" id="modalProductSummary">Description</p>
+
+      <div class="ingredient-section">
+        <div class="ingredient-label">Key Active Ingredients</div>
+        <p class="ingredient-text" id="modalActives"></p>
+      </div>
+
+      <div class="ingredient-section">
+        <div class="ingredient-label">Full Formulation</div>
+        <p class="ingredient-text" id="modalFullIngredients"></p>
+      </div>
+
+      <div class="ingredient-section">
+        <div class="ingredient-label">Customer Reviews</div>
+        <p class="ingredient-text" id="modalReviews"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Auth Modal -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-box">
+      <button class="modal-close" id="closeAuthModal">&times;</button>
+      
+      <div id="loginView">
+        <h2 class="modal-title">Welcome Back</h2>
+        <form id="loginForm">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="loginEmail" required>
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="loginPass" required>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Sign In</button>
+        </form>
+        <p style="text-align: center; margin-top: 1rem; font-size: 0.85rem;">
+          Need an account? <a id="toRegister" style="color: var(--color-mocha); cursor: pointer; text-decoration: underline;">Register</a>
+        </p>
+      </div>
+
+      <div id="registerView" style="display: none;">
+        <h2 class="modal-title">Create Account</h2>
+        <form id="registerForm">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="regName" required>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="regEmail" required>
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="regPass" minlength="6" required>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Register</button>
+        </form>
+        <p style="text-align: center; margin-top: 1rem; font-size: 0.85rem;">
+          Already registered? <a id="toLogin" style="color: var(--color-mocha); cursor: pointer; text-decoration: underline;">Sign In</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Application Engine -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Data Store with Custom Branded Vector Visuals (100% Guaranteed Load)
+      const productDatabase = [
+        {
+          id: 1,
+          name: "Mocha Dew Serum",
+          category: "hydration",
+          badge: "HYDRATION • 50ml",
+          price: 34,
+          rating: "★★★★★",
+          reviewScore: "4.9 (128 reviews)",
+          svg: `<svg viewBox="0 0 400 400" width="100%" height="100%"><rect width="400" height="400" fill="#F2F0EA"/><circle cx="200" cy="200" r="140" fill="#FFFFFF" opacity="0.8"/><rect x="188" y="70" width="24" height="40" rx="4" fill="#2A2826"/><rect x="175" y="110" width="50" height="20" rx="3" fill="#A5856F"/><path d="M160 130 L240 130 L240 270 A20 20 0 0 1 220 290 L180 290 A20 20 0 0 1 160 270 Z" fill="#A5856F" opacity="0.85"/><rect x="168" y="160" width="64" height="90" rx="4" fill="#FFFFFF"/><text x="200" y="195" font-family="Montserrat,sans-serif" font-size="9" font-weight="bold" fill="#A5856F" text-anchor="middle">AURA BOTANICS</text><text x="200" y="215" font-family="Montserrat,sans-serif" font-size="8" fill="#2A2826" text-anchor="middle">MOCHA DEW</text><circle cx="200" cy="235" r="4" fill="#A0D4E0"/></svg>`,
+          summary: "An ultra-hydrating electrolyte serum to replenish depleted cellular moisture.",
+          actives: "2% Multi-Weight Hyaluronic Acid, Caffeine Extract, Magnesium PCA, Zinc Ferment.",
+          fullIngredients: "Aqua, Glycerin, Caffeine, Sodium Hyaluronate, Camellia Sinensis Leaf Extract, Magnesium PCA.",
+          reviews: '"Completely transformed my flaky winter skin within two days." - Maya S.'
+        },
+        {
+          id: 2,
+          name: "Ceramide Cloud Cream",
+          category: "barrier",
+          badge: "BARRIER • 60ml",
+          price: 42,
+          rating: "★★★★★",
+          reviewScore: "4.8 (94 reviews)",
+          svg: `<svg viewBox="0 0 400 400" width="100%" height="100%"><rect width="400" height="400" fill="#F2F0EA"/><circle cx="200" cy="200" r="140" fill="#FFFFFF" opacity="0.8"/><rect x="140" y="130" width="120" height="30" rx="5" fill="#A5856F"/><rect x="145" y="160" width="110" height="85" rx="8" fill="#FFFFFF" stroke="#A5856F" stroke-width="2"/><rect x="155" y="180" width="90" height="50" rx="4" fill="#FAF8F5"/><text x="200" y="202" font-family="Montserrat,sans-serif" font-size="9" font-weight="bold" fill="#A5856F" text-anchor="middle">AURA BOTANICS</text><text x="200" y="218" font-family="Montserrat,sans-serif" font-size="7.5" fill="#2A2826" text-anchor="middle">CERAMIDE CLOUD</text></svg>`,
+          summary: "A whipped lipid recovery moisturizer formulated to repair the skin's protective barrier.",
+          actives: "Ceramides NP, AP, EOP, Phytosphingosine, Olive Squalane, Colloidal Oatmeal.",
+          fullIngredients: "Aqua, Caprylic/Capric Triglyceride, Squalane, Butyrospermum Parkii, Ceramide NP, Phytosphingosine.",
+          reviews: '"Rich without being heavy or greasy. My redness has vanished." - Elena R.'
+        },
+        {
+          id: 3,
+          name: "Moonlit Oat Cleanser",
+          category: "gentle",
+          badge: "CALM • 120ml",
+          price: 28,
+          rating: "★★★★☆",
+          reviewScore: "4.7 (83 reviews)",
+          svg: `<svg viewBox="0 0 400 400" width="100%" height="100%"><rect width="400" height="400" fill="#F2F0EA"/><circle cx="200" cy="200" r="140" fill="#FFFFFF" opacity="0.8"/><path d="M190 70 L210 70 L210 95 L225 95 L225 105 L190 105 Z" fill="#2A2826"/><rect x="185" y="105" width="30" height="20" fill="#A5856F"/><rect x="160" y="125" width="80" height="155" rx="16" fill="#FFFFFF" stroke="#A5856F" stroke-width="2"/><rect x="168" y="165" width="64" height="80" rx="4" fill="#A0D4E0" opacity="0.3"/><text x="200" y="195" font-family="Montserrat,sans-serif" font-size="9" font-weight="bold" fill="#A5856F" text-anchor="middle">AURA BOTANICS</text><text x="200" y="215" font-family="Montserrat,sans-serif" font-size="7.5" fill="#2A2826" text-anchor="middle">OAT CLEANSER</text></svg>`,
+          summary: "A soothing oat milk cleanser that dissolves impurities while preserving natural oils.",
+          actives: "Oat Kernel Flour, Bisabolol, Allantoin, German Chamomile Hydrosol.",
+          fullIngredients: "Aqua, Avena Sativa Kernel Flour, Cetearyl Alcohol, Glycerin, Bisabolol, Allantoin.",
+          reviews: '"Leaves my sensitive skin calm, soft, and balanced." - Clara M.'
+        },
+        {
+          id: 4,
+          name: "Botanical Squalane Nectar",
+          category: "barrier",
+          badge: "GLOW • 30ml",
+          price: 38,
+          rating: "★★★★★",
+          reviewScore: "5.0 (61 reviews)",
+          svg: `<svg viewBox="0 0 400 400" width="100%" height="100%"><rect width="400" height="400" fill="#F2F0EA"/><circle cx="200" cy="200" r="140" fill="#FFFFFF" opacity="0.8"/><rect x="190" y="80" width="20" height="35" rx="3" fill="#2A2826"/><rect x="178" y="115" width="44" height="15" fill="#A5856F"/><path d="M165 130 L235 130 L235 255 A15 15 0 0 1 220 270 L180 270 A15 15 0 0 1 165 255 Z" fill="#D9A466" opacity="0.9"/><rect x="173" y="165" width="54" height="70" rx="3" fill="#FFFFFF"/><text x="200" y="195" font-family="Montserrat,sans-serif" font-size="8" font-weight="bold" fill="#A5856F" text-anchor="middle">AURA BOTANICS</text><text x="200" y="212" font-family="Montserrat,sans-serif" font-size="7" fill="#2A2826" text-anchor="middle">SQUALANE</text></svg>`,
+          summary: "Fast-absorbing sugarcane squalane and wild rosehip oil for a natural, glassy glow.",
+          actives: "Pure Sugarcane Squalane, Cold-Pressed Rosa Canina Seed Oil, Vitamin E.",
+          fullIngredients: "100% Plant-Derived Squalane, Organic Rosa Canina Seed Oil, Tocopherol Acetate.",
+          reviews: '"Non-comedogenic and leaves the prettiest satin finish." - Sophia T.'
+        },
+        {
+          id: 5,
+          name: "Mineral Silk SPF 45",
+          category: "gentle",
+          badge: "PROTECT • 50ml",
+          price: 32,
+          rating: "★★★★☆",
+          reviewScore: "4.6 (115 reviews)",
+          svg: `<svg viewBox="0 0 400 400" width="100%" height="100%"><rect width="400" height="400" fill="#F2F0EA"/><circle cx="200" cy="200" r="140" fill="#FFFFFF" opacity="0.8"/><rect x="188" y="80" width="24" height="25" fill="#A0D4E0"/><rect x="165" y="105" width="70" height="175" rx="18" fill="#FFFFFF" stroke="#A5856F" stroke-width="2"/><circle cx="200" cy="155" r="16" fill="#A0D4E0" opacity="0.3"/><text x="200" y="195" font-family="Montserrat,sans-serif" font-size="9" font-weight="bold" fill="#A5856F" text-anchor="middle">AURA BOTANICS</text><text x="200" y="215" font-family="Montserrat,sans-serif" font-size="8" fill="#2A2826" text-anchor="middle">MINERAL SPF 45</text></svg>`,
+          summary: "Invisible non-nano zinc oxide broad spectrum sunscreen with green tea polyphenols.",
+          actives: "18% Non-Nano Zinc Oxide, Niacinamide (Vitamin B3), Camellia Sinensis.",
+          fullIngredients: "Zinc Oxide (18%), Aqua, Isododecane, Niacinamide, Camellia Sinensis Extract.",
+          reviews: '"Zero white cast and does not sting around the eyes." - Kevin L.'
+        },
+        {
+          id: 6,
+          name: "Willow Bark Balancing Mist",
+          category: "hydration",
+          badge: "REFINE • 100ml",
+          price: 26,
+          rating: "★★★★★",
+          reviewScore: "4.8 (77 reviews)",
+          svg: `<svg viewBox="0 0 400 400" width="100%" height="100%"><rect width="400" height="400" fill="#F2F0EA"/><circle cx="200" cy="200" r="140" fill="#FFFFFF" opacity="0.8"/><rect x="190" y="75" width="20" height="25" fill="#2A2826"/><rect x="180" y="100" width="40" height="15" fill="#A5856F"/><rect x="160" y="115" width="80" height="160" rx="14" fill="#A0D4E0" opacity="0.25" stroke="#A5856F" stroke-width="2"/><rect x="168" y="160" width="64" height="75" rx="3" fill="#FFFFFF"/><text x="200" y="190" font-family="Montserrat,sans-serif" font-size="9" font-weight="bold" fill="#A5856F" text-anchor="middle">AURA BOTANICS</text><text x="200" y="208" font-family="Montserrat,sans-serif" font-size="7.5" fill="#2A2826" text-anchor="middle">WILLOW MIST</text></svg>`,
+          summary: "Clarifying botanical mist that refines congested pores without alcohol or dryness.",
+          actives: "Salix Alba (Willow Bark) Extract, Witch Hazel (Alcohol-Free), Aloe Leaf Juice.",
+          fullIngredients: "Aqua, Salix Alba Bark Extract, Hamamelis Virginiana Water, Aloe Barbadensis Juice.",
+          reviews: '"A refreshing mid-day spritz that keeps shine in check." - Rachel H.'
+        }
+      ];
+
+      // 2. Storage & State Initialization
+      const CART_STORAGE_KEY = 'aura_cart_state';
+      const WISH_STORAGE_KEY = 'aura_wishlist_state';
+      const USER_STORAGE_KEY = 'aura_active_user';
+
+      let cart = JSON.parse(localStorage.getItem(CART_STORAGE_KEY) || '{}');
+      let wishlist = JSON.parse(localStorage.getItem(WISH_STORAGE_KEY) || '[]');
+      let activeCategory = 'all';
+      let searchQuery = '';
+      let activeSort = 'featured';
+
+      // 3. Toast Notifications
+      const showToast = (message) => {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerHTML = `<span>${message}</span>`;
+        container.appendChild(toast);
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          setTimeout(() => toast.remove(), 300);
+        }, 2500);
+      };
+
+      // 4. Render Dynamic Product Grid
+      const gridContainer = document.getElementById('productGridContainer');
+
+      const renderProducts = () => {
+        gridContainer.innerHTML = '';
+
+        // Filter
+        let filtered = productDatabase.filter(p => {
+          const matchesCat = activeCategory === 'all' || p.category === activeCategory;
+          const matchesSearch = p.name.toLowerCase().includes(searchQuery) ||
+                                p.summary.toLowerCase().includes(searchQuery) ||
+                                p.actives.toLowerCase().includes(searchQuery);
+          return matchesCat && matchesSearch;
+        });
+
+        // Sort
+        if (activeSort === 'price-asc') filtered.sort((a, b) => a.price - b.price);
+        else if (activeSort === 'price-desc') filtered.sort((a, b) => b.price - a.price);
+        else if (activeSort === 'name-asc') filtered.sort((a, b) => a.name.localeCompare(b.name));
+
+        if (filtered.length === 0) {
+          gridContainer.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 3rem 1rem; color: #777;">No formulations match your search criteria.</div>`;
+          return;
+        }
+
+        filtered.forEach(p => {
+          const isWished = wishlist.includes(p.id);
+          const article = document.createElement('article');
+          article.className = 'product-card';
+          article.setAttribute('data-id', p.id);
+          article.innerHTML = `
+            <div class="img-wrapper">
+              <button class="wishlist-btn ${isWished ? 'active' : ''}" data-wish-id="${p.id}">
+                ${isWished ? '♥' : '♡'}
+              </button>
+              ${p.svg}
+            </div>
+            <div class="product-details">
+              <div class="rating-row">
+                <span class="stars">${p.rating}</span>
+                <span class="review-count">${p.reviewScore}</span>
+              </div>
+              <h2 class="product-name">${p.name}</h2>
+              <p class="product-desc">${p.summary}</p>
+              <p class="click-hint">Click card to view ingredients &rarr;</p>
+              <div class="product-footer">
+                <span class="product-price">$${p.price}</span>
+                <button class="btn-cart" data-cart-id="${p.id}">Add to Bag</button>
+              </div>
+            </div>
+          `;
+          gridContainer.appendChild(article);
+        });
+
+        bindCardEvents();
+      };
+
+      // 5. Card Interaction Handlers
+      const bindCardEvents = () => {
+        // Open Ingredients Modal
+        document.querySelectorAll('.product-card').forEach(card => {
+          card.addEventListener('click', (e) => {
+            if (e.target.closest('.btn-cart') || e.target.closest('.wishlist-btn')) return;
+            const id = parseInt(card.getAttribute('data-id'));
+            const p = productDatabase.find(item => item.id === id);
+            if (p) {
+              document.getElementById('modalCategory').textContent = p.badge;
+              document.getElementById('modalProductName').textContent = p.name;
+              document.getElementById('modalProductSummary').textContent = p.summary;
+              document.getElementById('modalActives').textContent = p.actives;
+              document.getElementById('modalFullIngredients').textContent = p.fullIngredients;
+              document.getElementById('modalReviews').textContent = p.reviews;
+              document.getElementById('ingredientModal').classList.add('active');
+            }
+          });
+        });
+
+        // Add to Bag
+        document.querySelectorAll('.btn-cart').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const id = btn.getAttribute('data-cart-id');
+            const p = productDatabase.find(item => item.id == id);
+            cart[id] = (cart[id] || 0) + 1;
+            localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+            updateBagCount();
+            showToast(`Added 1x ${p.name} to bag.`);
+          });
+        });
+
+        // Wishlist Toggle
+        document.querySelectorAll('.wishlist-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const id = parseInt(btn.getAttribute('data-wish-id'));
+            if (wishlist.includes(id)) {
+              wishlist = wishlist.filter(item => item !== id);
+              showToast("Removed from wishlist.");
+            } else {
+              wishlist.push(id);
+              showToast("Saved to your wishlist.");
+            }
+            localStorage.setItem(WISH_STORAGE_KEY, JSON.stringify(wishlist));
+            updateWishCount();
+            renderProducts();
+          });
+        });
+      };
+
+      // 6. Live Search & Sorting Listeners
+      document.getElementById('liveSearchInput').addEventListener('input', (e) => {
+        searchQuery = e.target.value.toLowerCase().trim();
+        renderProducts();
+      });
+
+      document.getElementById('catalogSort').addEventListener('change', (e) => {
+        activeSort = e.target.value;
+        renderProducts();
+      });
+
+      // 7. Sidebar Category Filter
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeCategory = btn.getAttribute('data-category');
+          renderProducts();
+        });
+      });
+
+      // 8. Bag Modal & Management
+      const cartModal = document.getElementById('cartModal');
+      const updateBagCount = () => {
+        const total = Object.values(cart).reduce((sum, q) => sum + q, 0);
+        document.getElementById('cartCount').textContent = total;
+      };
+
+      const updateWishCount = () => {
+        document.getElementById('wishCount').textContent = wishlist.length;
+      };
+
+      const renderCartModal = () => {
+        const listEl = document.getElementById('cartItemsList');
+        const subtotalEl = document.getElementById('cartSubtotal');
+        listEl.innerHTML = '';
+
+        const itemIds = Object.keys(cart);
+        if (itemIds.length === 0) {
+          listEl.innerHTML = '<li style="text-align:center; padding: 2rem 0; color:#888;">Your bag is currently empty.</li>';
+          subtotalEl.textContent = '$0.00';
+          return;
+        }
+
+        let subtotal = 0;
+        itemIds.forEach(id => {
+          const qty = cart[id];
+          const p = productDatabase.find(item => item.id == id);
+          if (!p) return;
+          const itemTotal = p.price * qty;
+          subtotal += itemTotal;
+
+          const li = document.createElement('li');
+          li.className = 'cart-item';
+          li.innerHTML = `
+            <div>
+              <div class="cart-item-title">${p.name}</div>
+              <div class="cart-item-meta">$${p.price} each &bull; $${itemTotal}</div>
+            </div>
+            <div class="cart-qty-ctrl">
+              <button class="qty-btn" data-action="dec" data-id="${id}">-</button>
+              <span style="font-weight: 600; min-width: 18px; text-align: center;">${qty}</span>
+              <button class="qty-btn" data-action="inc" data-id="${id}">+</button>
+            </div>
+          `;
+          listEl.appendChild(li);
+        });
+
+        subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+
+        listEl.querySelectorAll('.qty-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const id = btn.getAttribute('data-id');
+            const action = btn.getAttribute('data-action');
+            if (action === 'inc') cart[id]++;
+            else {
+              cart[id]--;
+              if (cart[id] <= 0) delete cart[id];
+            }
+            localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+            updateBagCount();
+            renderCartModal();
+          });
+        });
+      };
+
+      document.getElementById('openCartBtn').addEventListener('click', () => {
+        renderCartModal();
+        cartModal.classList.add('active');
+      });
+
+      document.getElementById('closeCartModal').addEventListener('click', () => cartModal.classList.remove('active'));
+
+      // 9. Multi-Step Checkout Flow
+      const checkoutModal = document.getElementById('checkoutModal');
+      const step1 = document.getElementById('checkoutStep1');
+      const step2 = document.getElementById('checkoutStep2');
+      const step3 = document.getElementById('checkoutStep3');
+
+      document.getElementById('startCheckoutBtn').addEventListener('click', () => {
+        if (Object.keys(cart).length === 0) {
+          showToast("Add items to your bag first.");
+          return;
+        }
+        cartModal.classList.remove('active');
+        step1.classList.add('active');
+        step2.classList.remove('active');
+        step3.classList.remove('active');
+        checkoutModal.classList.add('active');
+      });
+
+      document.getElementById('shippingForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('shipName').value;
+        document.getElementById('receiptName').textContent = name;
+
+        // Calculate total
+        let subtotal = 0;
+        Object.keys(cart).forEach(id => {
+          const p = productDatabase.find(item => item.id == id);
+          if (p) subtotal += p.price * cart[id];
+        });
+        document.getElementById('checkoutTotal').textContent = `$${subtotal.toFixed(2)}`;
+
+        step1.classList.remove('active');
+        step2.classList.add('active');
+        document.getElementById('stepTab2').classList.add('active');
+      });
+
+      document.getElementById('paymentForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        cart = {};
+        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+        updateBagCount();
+
+        document.getElementById('receiptId').textContent = `#AURA-${Math.floor(1000 + Math.random() * 9000)}`;
+        step2.classList.remove('active');
+        step3.classList.add('active');
+        document.getElementById('stepTab3').classList.add('active');
+      });
+
+      document.getElementById('finishCheckoutBtn').addEventListener('click', () => {
+        checkoutModal.classList.remove('active');
+      });
+
+      document.getElementById('closeCheckoutModal').addEventListener('click', () => {
+        checkoutModal.classList.remove('active');
+      });
+
+      // 10. Ingredient & Auth Modals Close
+      document.getElementById('closeIngredientModal').addEventListener('click', () => {
+        document.getElementById('ingredientModal').classList.remove('active');
+      });
+
+      const authModal = document.getElementById('authModal');
+      document.getElementById('openLoginBtn').addEventListener('click', () => {
+        document.getElementById('loginView').style.display = 'block';
+        document.getElementById('registerView').style.display = 'none';
+        authModal.classList.add('active');
+      });
+
+      document.getElementById('openRegisterBtn').addEventListener('click', () => {
+        document.getElementById('loginView').style.display = 'none';
+        document.getElementById('registerView').style.display = 'block';
+        authModal.classList.add('active');
+      });
+
+      document.getElementById('closeAuthModal').addEventListener('click', () => authModal.classList.remove('active'));
+      document.getElementById('toRegister').addEventListener('click', () => {
+        document.getElementById('loginView').style.display = 'none';
+        document.getElementById('registerView').style.display = 'block';
+      });
+      document.getElementById('toLogin').addEventListener('click', () => {
+        document.getElementById('registerView').style.display = 'none';
+        document.getElementById('loginView').style.display = 'block';
+      });
+
+      // Simple Auth Handler
+      document.getElementById('loginForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const user = { name: "Sarah" };
+        localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
+        authModal.classList.remove('active');
+        syncUser();
+        showToast("Signed in successfully.");
+      });
+
+      document.getElementById('registerForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('regName').value;
+        const user = { name: name };
+        localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
+        authModal.classList.remove('active');
+        syncUser();
+        showToast("Account created and signed in.");
+      });
+
+      const syncUser = () => {
+        const user = JSON.parse(localStorage.getItem(USER_STORAGE_KEY) || 'null');
+        const authSection = document.getElementById('authSection');
+        const regSection = document.getElementById('regSection');
+        if (user) {
+          authSection.innerHTML = `
+            <span class="user-pill">
+              Hi, ${user.name}
+              <button id="logoutBtn">Logout</button>
+            </span>
+          `;
+          regSection.style.display = 'none';
+          document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem(USER_STORAGE_KEY);
+            location.reload();
+          });
+        }
+      };
+
+      // 11. Wishlist View Button Handler
+      document.getElementById('openWishlistBtn').addEventListener('click', () => {
+        if (wishlist.length === 0) {
+          showToast("Your wishlist is empty. Tap ♡ on items to save them.");
+          return;
+        }
+        activeCategory = 'all';
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        gridContainer.innerHTML = '';
+        const wished = productDatabase.filter(p => wishlist.includes(p.id));
+        wished.forEach(p => {
+          const article = document.createElement('article');
+          article.className = 'product-card';
+          article.setAttribute('data-id', p.id);
+          article.innerHTML = `
+            <div class="img-wrapper">
+              <button class="wishlist-btn active" data-wish-id="${p.id}">♥</button>
+              ${p.svg}
+            </div>
+            <div class="product-details">
+              <h2 class="product-name">${p.name}</h2>
+              <p class="product-desc">${p.summary}</p>
+              <div class="product-footer">
+                <span class="product-price">$${p.price}</span>
+                <button class="btn-cart" data-cart-id="${p.id}">Add to Bag</button>
+              </div>
+            </div>
+          `;
+          gridContainer.appendChild(article);
+        });
+        bindCardEvents();
+        showToast(`Showing ${wishlist.length} saved item(s).`);
+      });
+
+      // Mobile Nav Toggle
+      document.getElementById('navToggle').addEventListener('click', () => {
+        document.getElementById('storeNav').classList.toggle('active');
+      });
+
+      // Initialize
+      renderProducts();
+      updateBagCount();
+      updateWishCount();
+      syncUser();
+    });
+  </script>
+</body>
+</html>
