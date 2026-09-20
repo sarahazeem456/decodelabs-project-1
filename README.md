@@ -35,6 +35,6 @@ Deep Earth #2A2826 High-contrast Typography & Borders
 Typography Montserrat(Headings) & Open Sans(Body) Clean modern hierarchy 
 
  Built With:
-HTML5: Semantic landmarks (<header>, <nav>, <aside>, <main>, <article>, <footer>) for WCAG accessibility and screen-reader navigation.
+HTML5: Semantic landmarks (header, nav, aside, main, article, footer) for WCAG accessibility and screen-reader navigation.
 CSS3: CSS Grid, Flexbox, Custom Properties (CSS Variables), clamp() fluid math, and media queries.
 JavaScript (Vanilla ES6+): DOM state manipulation, modal controllers, filtering/sorting logic, and localStorage persistence.
